@@ -48,6 +48,9 @@ qs_parameters.py
 - Run `gr_CM.f90` to compute the RDF of the center of mass (and optionally all particles and/or even (or odd) particles).  
 - Generate `dump_cm` files for the center-of-mass trajectories.
 
+gfortran gr_CM.f90 -o call (to generate the executable call)
+./script_gr_dumpcm (it will use the executable call and run for all variables)
+
 ---
 
 ## 5. Translational Order Parameter and Excess Entropy
@@ -58,7 +61,8 @@ qs_parameters.py
 
 Using the program:
 
-tau_s2.f90
+gfortran tau_s2.f90 -o tr (to generate the executable tr)
+./script_tau_s2 (it will use the executable tr and run for all variables)
 
 
 ---
