@@ -1,0 +1,27 @@
+#!/bin/bash
+LANG=""
+local=`pwd`
+export LC_ALL=C
+
+for kel in 0.1 2.0 5.0 10.0 100.0; do
+    for r0 in 1.0; do
+        for LadoH in 7.4 7.5 7.6 7.7 7.8 8.0 8.25 8.5 8.75 9.0 9.25 9.5 9.75 10.0 10.25 10.5 10.75 11.0 11.25 11.5 11.75 12.0 12.5 13.0 13.5 14.0 14.5 15.0 15.5 17.0; do
+            for TEMP in 0.050 0.080 0.110 0.140 0.170 0.200 0.230 0.260 0.290 0.320 0.350 0.380 0.410 0.440 0.470 0.500 0.540 0.580 0.620 0.670 0.720 0.800 0.900; do
+                if [ -e 'rdfcm_k_'$kel'_r0_'$r0'_L_'$LadoH'_T_'$TEMP'.lammpstrj' ]; then
+                        cp 'rdfcm_k_'$kel'_r0_'$r0'_L_'$LadoH'_T_'$TEMP'.lammpstrj' 'gr_cm.dat'
+                        echo $LadoH > inicial_tr
+                        ./tr < inicial_tr
+                        read rho1 tr  < 'tr_cm.dat'
+                        read rho2 ent  < 'ent_cm.dat'
+                        echo $rho1 $tr >> 'tr_cm_k_'$kel'_r0_'$r0'_T_'$TEMP'.dat'
+                        echo $rho2 $ent >> 'ent_cm_k_'$kel'_r0_'$r0'__T_'$TEMP'.dat'
+                fi
+            done
+        done
+    done
+done
+mkdir translacional_new
+mkdir excess_entropy
+mv tr_* translacional_new
+mv ent_* excess_entropy
+
