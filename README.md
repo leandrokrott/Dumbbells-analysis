@@ -1,6 +1,6 @@
 # Dumbbells Simulation in NVT Ensemble
 
-This repository contains scripts and workflows for simulating dumbbells in the NVT ensemble, computing orientational and translational order parameters, excess entropy, and self-diffusion.
+This repository contains scripts and workflows for simulating dumbbells in the NVT ensemble, computing orientational and translational order parameters, excess entropy, self-diffusion, and average of monomer-monomer distance.
 
 ---
 
