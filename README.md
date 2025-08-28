@@ -83,11 +83,19 @@ self_diffusion.py
 
 ---
 
+## 7. Average of monomer-monomer distance
+
+- Compute the average of monomer-monomer distance:
+
+lambda_average.py
+
+---
+
 ## References
 
 - Scripts and inputs: `alan.table`, `mymol.txt`
 - Main programs: `in.dumbbells_config`, `in.dumbbells_loop_NVT`
-- Analysis: `qs_parameters.py`, `gr_CM.f90`, `tau_s2.f90`, `MSD.py`, `self_diffusion.py`
+- Analysis: `qs_parameters.py`, `gr_CM.f90`, `tau_s2.f90`, `MSD.py`, `self_diffusion.py`, `lambda_average.py`
 
 
 
