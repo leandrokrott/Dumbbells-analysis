@@ -1,0 +1,99 @@
+# ---------- Initializing the simulation --------------------------------------------- 
+
+units		    lj                         
+atom_style	    bond                        
+newton          on off
+comm_modify     vel yes cutoff 30
+dimension       3
+boundary        p p p                        
+#------------------------------------------------------------------------------------------ 
+
+
+
+
+#---------- VariáVariables and othersveis --------------------------------------------------------------------- 
+
+variable        run_NVT1 index 1000000
+variable        run_NVT2 index 1000000
+variable        T index 1.00
+variable        L index 14.0
+variable        kel index 100.0
+variable        r0 index 1.0
+
+
+#------------------------------------------------------------------------------------------ 
+
+
+
+
+
+#-------------Make dumbbells--------------------------------------------------------------------- 
+
+region          simbox block -${L} ${L} -${L} ${L} -${L} ${L}
+create_box      2 simbox &
+                bond/types 1 &
+                extra/bond/per/atom 1
+molecule        dumbbell mymol.txt
+create_atoms    0 random 1000 13529 NULL mol dumbbell 13529 overlap 0.5 maxtry 200
+
+mass		    1 1.0
+mass		    2 1.0
+
+velocity        all create ${T} 87287 rot yes dist gaussian  
+
+
+
+#------------------------------------------------------------------------------------------ 
+
+
+
+
+# ---------- Defining the pair interactions  --------------------------------------------- 
+
+pair_style      table bitmap 12
+pair_coeff      * * alan.table alan 4.0
+bond_style      harmonic
+bond_coeff      1  ${kel}  ${r0}             	# First parameter is k, second is r0
+neighbor	    0.3 bin  
+neigh_modify	every 1 delay 10 check yes
+min_style cg
+minimize 1e-4 1e-6 100 1000
+
+
+
+
+#--------Ensemble 1-------------------------------------------------------------
+
+fix		        NVT1 all nvt temp ${T} ${T} 0.1
+timestep        0.001
+thermo		    50
+run 		    ${run_NVT1}
+
+unfix           NVT1
+reset_timestep  0
+
+#------------------------------------------------------------------------------------------
+
+
+#---------- Dump, logs --------------------------------------------------------------------- 
+
+log             log_k_${kel}_r0_${r0}_L_${L}_T_${T}.dat
+dump            mydump all custom 2000 dump_k_${kel}_r0_${r0}_L_${L}_T_${T}.lammpstrj id type x y z vx vy vz
+dump_modify     mydump sort id
+
+variable        Density equal density
+variable        Enthalpy equal enthalpy
+fix             2 all ave/time 1 ${run_NVT2} ${run_NVT2} c_thermo_temp c_thermo_press v_Density v_Enthalpy start ${run_NVT2} file log3_k_${kel}_r0_${r0}_L_${L}_T_${T}.dat
+
+#------------------------------------------------------------------------------------------------------------------------
+
+
+#--------Simulação------------------------------------------------------------------------------------------------
+
+fix		        NVT2 all nvt temp ${T} ${T} 0.1
+run 		    ${run_NVT2}
+
+#------------------------------------------------------------------------------------------------------------------------
+
+write_data config_k_${kel}_L_${L}.dat
+
