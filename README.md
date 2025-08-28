@@ -49,6 +49,7 @@ qs_parameters.py
 - Generate `dump_cm` files for the center-of-mass trajectories.
 
 gfortran gr_CM.f90 -o call (to generate the executable call)
+
 ./script_gr_dumpcm (it will use the executable call and run for all variables)
 
 ---
@@ -62,6 +63,7 @@ gfortran gr_CM.f90 -o call (to generate the executable call)
 Using the program:
 
 gfortran tau_s2.f90 -o tr (to generate the executable tr)
+
 ./script_tau_s2 (it will use the executable tr and run for all variables)
 
 
